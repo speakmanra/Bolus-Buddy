@@ -1,19 +1,53 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createAppContainer } from "react-navigation";
 
-export default function App() {
+import Ionicons from "react-native-vector-icons/Ionicons";
+
+import Calculate from "./views/Calculate";
+import Settings from "./views/Settings";
+import Logs from "./views/Logs";
+
+const TabNavigator = createBottomTabNavigator(
+  {
+    Calculate: Calculate,
+    Logs: Logs,
+    Settings: Settings
+  },
+  {
+    initialRouteName: "Calculate",
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === "Calculate") {
+          iconName = `ios-calculator`;
+        } else if (routeName === "Settings") {
+          iconName = `ios-options`;
+        } else if (routeName === "Logs") {
+          iconName = "ios-paper";
+        }
+
+        // You can return any component that you like here!
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
+      }
+    }),
+    tabBarOptions: {
+      activeTintColor: "green",
+      inactiveTintColor: "gray"
+    }
+  }
+);
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Counter />
+      </PersistGate>
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default createAppContainer(TabNavigator, App);
