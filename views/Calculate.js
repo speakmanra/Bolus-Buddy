@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { View, ScrollView, StyleSheet, Text } from "react-native";
-import { Form, Item, Label, Input } from "native-base";
+import { Form, Item, Label, Input, Button } from "native-base";
+import { connect } from "react-redux";
 
-export default class Calculate extends Component {
+class Calculate extends Component {
   static navigationOptions = {
     title: "Calculate",
     headerStyle: {
@@ -13,52 +14,48 @@ export default class Calculate extends Component {
       fontWeight: "bold"
     }
   };
-  state = {
-    carbRatio: 15,
-    insulinSensitivity: 50,
-    insulinType: "humalog",
-    correctionRangeLow: 90,
-    correctionRangeHigh: 120
-  };
-
-  componentWillMount() {
-    const { navigation } = this.props;
-    const carbRatio = navigation.getParam("carbRatio", "NO-ID");
-    const insulinSensitivity = navigation.getParam(
-      "insulinSensitivity",
-      "NO-ID"
-    );
-    const insulinType = navigation.getParam("insulinType", "NO-ID");
-    const correctionRangeLow = navigation.getParam(
-      "correctionRangeLow",
-      "NO-ID"
-    );
-    const correctionRangeHigh = navigation.getParam(
-      "correctionRangeHigh",
-      "NO-ID"
-    );
-    if (
-      carbRatio != "NO-ID" &&
-      insulinSensitivity != "NO-ID" &&
-      insulinType != "NO-ID"
-    ) {
-      this.setState({
-        carbRatio,
-        insulinSensitivity,
-        insulinType
-      });
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      carbRatio: 15,
+      insulinSensitivity: 50
+    };
   }
 
+  getSettings = () => {
+    this.setState({
+      carbRatio: this.props.carbRatio,
+      insulinSensitivity: this.props.insulinSensitivity
+    });
+  };
+
+  insulinAlgo = () => {
+    const { carbRatio, insulinSensitivity, insulinTotal, carbs } = this.state;
+    foodBolus = carbs / carbRatio;
+    this.setState({
+      insulinTotal: foodBolus
+    });
+  };
+
+  getBolus = () => {
+    this.getSettings();
+    this.insulinAlgo();
+  };
+
+  updateCarbs = num => {
+    this.setState({
+      carbs: num
+    });
+  };
+
   render() {
-    const { carbRatio, insulinSensitivity, insulinType } = this.state;
+    const { carbRatio, insulinSensitivity, insulinTotal } = this.state;
+    console.log(this.state.carbs);
     return (
       <View style={styles.container}>
-        <Text>
-          {carbRatio}
-          {insulinSensitivity}
-          {insulinType}
-        </Text>
+        <Text>{carbRatio}</Text>
+        <Text>{insulinSensitivity}</Text>
+        <Text>{insulinTotal} total units</Text>
         <Form>
           <Item floatingLabel>
             <Label>Food (Optional)</Label>
@@ -66,8 +63,11 @@ export default class Calculate extends Component {
           </Item>
           <Item floatingLabel last>
             <Label>Carbohydrates</Label>
-            <Input />
+            <Input onChangeText={this.updateCarbs} />
           </Item>
+          <Button onPress={this.getBolus}>
+            <Text>Click Me!</Text>
+          </Button>
         </Form>
       </View>
     );
@@ -82,3 +82,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#E7E7E7"
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    carbRatio: state.carbRatio,
+    insulinSensitivity: state.insulinSensitivity
+  };
+};
+
+export default connect(mapStateToProps)(Calculate);

@@ -1,64 +1,66 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Form, Item, Label, Input, Button } from "native-base";
+import { connect } from "react-redux";
+import {
+  changeInsulinSensitivity,
+  changeCarbRatio
+} from "../redux/actions/actions";
 
-export default class Settings extends Component {
-  state = {
-    carbRatio: 15,
-    insulinSensitivity: 50,
-    insulinType: "humalog",
-    correctionRangeLow: 90,
-    correctionRangeHigh: 120
-  };
+class Settings extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      carbRatio: 0,
+      insulinSensitivity: 0,
+      minBloodSugar: 70,
+      maxBloodSugar: 250
+    };
+  }
 
-  updateCarb = num => {
+  setCarbRatio = num => {
+    this.props.changeCarbRatio(num);
     this.setState({ carbRatio: num });
   };
 
-  updateSensitivity = num => {
+  setInsulinSensitivity = num => {
+    this.props.changeInsulinSensitivity(num);
     this.setState({ insulinSensitivity: num });
   };
 
   render() {
-    const {
-      carbRatio,
-      insulinSensitivity,
-      insulinType,
-      correctionRangeHigh,
-      correctionRangeLow
-    } = this.state;
+    console.log(this.state.carbRatio);
     return (
       <View style={styles.container}>
         <Form>
           <Item floatingLabel>
             <Label style={styles.label}>Carb Ratio</Label>
-            <Input onChangeText={this.updateCarb} />
+            <Input onChangeText={this.setCarbRatio} />
           </Item>
           <Item floatingLabel>
             <Label style={styles.label}>Insulin Sensitivity</Label>
-            <Input onChangeText={this.updateSensitivity} />
+            <Input onChangeText={this.setInsulinSensitivity} />
           </Item>
-          {/* <Item floatingLabel>
-            <Label style={styles.label}>Insulin Type</Label>
-            <Input />
-          </Item>
-          <Item floatingLabel last>
-            <Label style={styles.label}>Correction Range</Label>
-            <Input />
-          </Item> */}
-          <Button
-            onPress={() =>
-              this.props.navigation.navigate("Calculate", {
-                carbRatio,
-                insulinSensitivity,
-                insulinType,
-                correctionRangeHigh,
-                correctionRangeLow
-              })
-            }
-          >
-            <Text>Click Me!</Text>
-          </Button>
+          <View>
+            <RangeSlider
+              minValue={0}
+              maxValue={100}
+              tintColor={"#da0f22"}
+              handleBorderWidth={1}
+              handleBorderColor='#454d55'
+              selectedMinimum={20}
+              selectedMaximum={40}
+              style={{
+                flex: 1,
+                height: 70,
+                padding: 10,
+                backgroundColor: "#ddd"
+              }}
+              onChange={data => {
+                console.log(data);
+              }}
+            />
+          </View>
         </Form>
       </View>
     );
@@ -76,3 +78,11 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
+
+export default connect(
+  null,
+  {
+    changeCarbRatio,
+    changeInsulinSensitivity
+  }
+)(Settings);
