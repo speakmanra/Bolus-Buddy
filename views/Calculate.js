@@ -18,7 +18,8 @@ class Calculate extends Component {
     super(props);
     this.state = {
       carbRatio: 15,
-      insulinSensitivity: 50
+      insulinSensitivity: 50,
+      insulinTotal: 0
     };
   }
 
@@ -53,22 +54,25 @@ class Calculate extends Component {
     console.log(this.state.carbs);
     return (
       <View style={styles.container}>
-        <Text>{carbRatio}</Text>
-        <Text>{insulinSensitivity}</Text>
-        <Text>{insulinTotal} total units</Text>
-        <Form>
-          <Item floatingLabel>
-            <Label>Food (Optional)</Label>
-            <Input />
-          </Item>
-          <Item floatingLabel last>
-            <Label>Carbohydrates</Label>
-            <Input onChangeText={this.updateCarbs} />
-          </Item>
-          <Button onPress={this.getBolus}>
-            <Text>Click Me!</Text>
-          </Button>
-        </Form>
+        <View style={styles.form}>
+          <Form>
+            <Item floatingLabel>
+              <Label>Food (Optional)</Label>
+              <Input />
+            </Item>
+            <Item floatingLabel last>
+              <Label>Carbohydrates</Label>
+              <Input onChangeText={this.updateCarbs} />
+            </Item>
+          </Form>
+        </View>
+        <Button style={styles.button} onPress={this.getBolus}>
+          <Text>Click Me!</Text>
+        </Button>
+        <Text style={styles.resultText}>
+          {Math.round(insulinTotal * 100) / 100}
+        </Text>
+        <Text style={styles.totalUnits}>total units</Text>
       </View>
     );
   }
@@ -77,9 +81,26 @@ class Calculate extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "stretch",
-    justifyContent: "center",
-    backgroundColor: "#E7E7E7"
+    backgroundColor: "#E7E7E7",
+    justifyContent: "center"
+  },
+  form: {
+    alignItems: "stretch"
+  },
+  button: {
+    width: 150,
+    alignSelf: "center",
+    marginTop: 25,
+    backgroundColor: "gray"
+  },
+  resultText: {
+    textAlign: "center",
+    marginTop: 25,
+    fontSize: 50
+  },
+  totalUnits: {
+    textAlign: "center",
+    fontSize: 25
   }
 });
 
