@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet, Text } from "react-native";
+import { View, ScrollView, StyleSheet, Text, Keyboard } from "react-native";
 import { Form, Item, Label, Input, Button } from "native-base";
 import { connect } from "react-redux";
 
@@ -19,6 +19,9 @@ class Calculate extends Component {
     this.state = {
       carbRatio: 15,
       insulinSensitivity: 50,
+      minRange: 80,
+      maxRange: 160,
+      bloodSugar: 0,
       insulinTotal: 0
     };
   }
@@ -26,19 +29,39 @@ class Calculate extends Component {
   getSettings = () => {
     this.setState({
       carbRatio: this.props.carbRatio,
-      insulinSensitivity: this.props.insulinSensitivity
+      insulinSensitivity: this.props.insulinSensitivity,
+      minRange: this.props.minRange,
+      maxRange: this.props.maxRange
     });
   };
 
   insulinAlgo = () => {
-    const { carbRatio, insulinSensitivity, insulinTotal, carbs } = this.state;
+    const {
+      carbRatio,
+      insulinSensitivity,
+      carbs,
+      bloodSugar,
+      minRange,
+      maxRange
+    } = this.state;
     foodBolus = carbs / carbRatio;
+    let correctionBolus;
+    if (bloodSugar < minRange && bloodSugar != 0) {
+      correctionBolus = ((minRange - bloodSugar) / insulinSensitivity) * -1;
+    } else if (bloodSugar > maxRange) {
+      correctionBolus = (bloodSugar - maxRange) / insulinSensitivity;
+    } else {
+      correctionBolus = 0;
+    }
+    let insulinTotal = correctionBolus + foodBolus;
+
     this.setState({
-      insulinTotal: foodBolus
+      insulinTotal: insulinTotal
     });
   };
 
   getBolus = () => {
+    Keyboard.dismiss();
     this.getSettings();
     this.insulinAlgo();
   };
@@ -49,6 +72,12 @@ class Calculate extends Component {
     });
   };
 
+  updateBloodSugar = num => {
+    this.setState({
+      bloodSugar: num
+    });
+  };
+
   render() {
     const { carbRatio, insulinSensitivity, insulinTotal } = this.state;
     console.log(this.state.carbs);
@@ -56,13 +85,17 @@ class Calculate extends Component {
       <View style={styles.container}>
         <View style={styles.form}>
           <Form>
-            <Item floatingLabel>
+            <Item inlineLabel>
               <Label>Food (Optional)</Label>
               <Input />
             </Item>
-            <Item floatingLabel last>
+            <Item inlineLabel>
               <Label>Carbohydrates</Label>
               <Input onChangeText={this.updateCarbs} />
+            </Item>
+            <Item inlineLabel last>
+              <Label>Blood Sugar</Label>
+              <Input onChangeText={this.updateBloodSugar} />
             </Item>
           </Form>
         </View>
@@ -107,7 +140,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     carbRatio: state.carbRatio,
-    insulinSensitivity: state.insulinSensitivity
+    insulinSensitivity: state.insulinSensitivity,
+    minRange: state.minRange,
+    maxRange: state.maxRange
   };
 };
 

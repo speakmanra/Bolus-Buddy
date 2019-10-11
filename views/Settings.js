@@ -4,17 +4,20 @@ import { Form, Item, Label, Input, Button } from "native-base";
 import { connect } from "react-redux";
 import {
   changeInsulinSensitivity,
-  changeCarbRatio
+  changeCarbRatio,
+  changeMinRange,
+  changeMaxRange
 } from "../redux/actions/actions";
+// import RangeSlider from "react-native-range-slider";
 
 class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      carbRatio: 0,
-      insulinSensitivity: 0,
-      minBloodSugar: 70,
-      maxBloodSugar: 250
+      carbRatio: 15,
+      insulinSensitivity: 50,
+      minRange: 80,
+      maxRange: 160
     };
   }
 
@@ -28,26 +31,56 @@ class Settings extends Component {
     this.setState({ insulinSensitivity: num });
   };
 
+  setMinRange = num => {
+    this.props.changeMinRange(num);
+    this.setState({ minRange: num });
+  };
+
+  setMaxRange = num => {
+    this.props.changeMaxRange(num);
+    this.setState({ maxRange: num });
+  };
+
   render() {
-    console.log(this.state.carbRatio);
+    const { carbRatio, insulinSensitivity, minRange, maxRange } = this.state;
     return (
       <View style={styles.container}>
         <Form>
-          <Item floatingLabel>
+          <Item inlineLabel>
             <Label style={styles.label}>Carb Ratio</Label>
-            <Input onChangeText={this.setCarbRatio} />
+            <Input
+              placeholder={carbRatio.toString()}
+              onChangeText={this.setCarbRatio}
+            />
           </Item>
-          <Item floatingLabel>
+          <Item inlineLabel>
             <Label style={styles.label}>Insulin Sensitivity</Label>
-            <Input onChangeText={this.setInsulinSensitivity} />
+            <Input
+              placeholder={insulinSensitivity.toString()}
+              onChangeText={this.setInsulinSensitivity}
+            />
+          </Item>
+          <Item inlineLabel>
+            <Label style={styles.label}>Min Range</Label>
+            <Input
+              placeholder={minRange.toString()}
+              onChangeText={this.setMinRange}
+            />
+          </Item>
+          <Item inlineLabel last>
+            <Label style={styles.label}>Max Range</Label>
+            <Input
+              placeholder={maxRange.toString()}
+              onChangeText={this.setMaxRange}
+            />
           </Item>
           <View>
-            <RangeSlider
+            {/* <RangeSlider
               minValue={0}
               maxValue={100}
               tintColor={"#da0f22"}
               handleBorderWidth={1}
-              handleBorderColor='#454d55'
+              handleBorderColor="#454d55"
               selectedMinimum={20}
               selectedMaximum={40}
               style={{
@@ -59,7 +92,7 @@ class Settings extends Component {
               onChange={data => {
                 console.log(data);
               }}
-            />
+            /> */}
           </View>
         </Form>
       </View>
@@ -83,6 +116,8 @@ export default connect(
   null,
   {
     changeCarbRatio,
-    changeInsulinSensitivity
+    changeInsulinSensitivity,
+    changeMinRange,
+    changeMaxRange
   }
 )(Settings);
