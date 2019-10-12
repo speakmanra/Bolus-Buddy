@@ -7,6 +7,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Calculate from "../views/Calculate";
 import Settings from "../views/Settings";
 import Logs from "../views/Logs";
+import Login from "../views/Login";
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -34,7 +35,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     }),
     tabBarOptions: {
-      activeTintColor: "green",
+      activeTintColor: "#29AD85",
       inactiveTintColor: "gray"
     }
   }

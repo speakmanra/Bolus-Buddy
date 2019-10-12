@@ -1,6 +1,16 @@
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet, Text, Keyboard } from "react-native";
-import { Form, Item, Label, Input, Button } from "native-base";
+import { View, StyleSheet, Keyboard, KeyboardAvoidingView } from "react-native";
+import {
+  Form,
+  Item,
+  Label,
+  Input,
+  Button,
+  Icon,
+  Text,
+  Spinner
+} from "native-base";
+
 import { connect } from "react-redux";
 
 class Calculate extends Component {
@@ -22,7 +32,9 @@ class Calculate extends Component {
       minRange: 80,
       maxRange: 160,
       bloodSugar: 0,
-      insulinTotal: 0
+      insulinTotal: 0,
+      noInput: true,
+      isLoading: false
     };
   }
 
@@ -35,7 +47,7 @@ class Calculate extends Component {
     });
   };
 
-  insulinAlgo = () => {
+  insulinAlgo() {
     const {
       carbRatio,
       insulinSensitivity,
@@ -44,6 +56,7 @@ class Calculate extends Component {
       minRange,
       maxRange
     } = this.state;
+
     foodBolus = carbs / carbRatio;
     let correctionBolus;
     if (bloodSugar < minRange && bloodSugar != 0) {
@@ -53,17 +66,31 @@ class Calculate extends Component {
     } else {
       correctionBolus = 0;
     }
+    console.log(foodBolus);
+    console.log(correctionBolus);
     let insulinTotal = correctionBolus + foodBolus;
 
     this.setState({
       insulinTotal: insulinTotal
     });
-  };
+  }
 
   getBolus = () => {
     Keyboard.dismiss();
     this.getSettings();
-    this.insulinAlgo();
+    this.setState({
+      isLoading: true,
+      noInput: true
+    });
+    setTimeout(() => {
+      this.insulinAlgo();
+    }, 500);
+    setTimeout(() => {
+      this.setState({
+        isLoading: false,
+        noInput: false
+      });
+    }, 600);
   };
 
   updateCarbs = num => {
@@ -79,52 +106,106 @@ class Calculate extends Component {
   };
 
   render() {
-    const { carbRatio, insulinSensitivity, insulinTotal } = this.state;
-    console.log(this.state.carbs);
+    const { noInput, insulinTotal, isLoading } = this.state;
     return (
-      <View style={styles.container}>
-        <View style={styles.form}>
-          <Form>
-            <Item inlineLabel>
-              <Label>Food (Optional)</Label>
-              <Input />
-            </Item>
-            <Item inlineLabel>
-              <Label>Carbohydrates</Label>
-              <Input onChangeText={this.updateCarbs} />
-            </Item>
-            <Item inlineLabel last>
-              <Label>Blood Sugar</Label>
-              <Input onChangeText={this.updateBloodSugar} />
-            </Item>
-          </Form>
+      <View style={{ flex: 1 }}>
+        <View style={styles.formContainer}>
+          <View style={styles.form}>
+            <Form>
+              <Item
+                style={styles.input}
+                rounded
+                inlineLabel
+                error={isNaN(insulinTotal)}
+              >
+                <Label>Carbohydrates</Label>
+                <Input onChangeText={this.updateCarbs} />
+                <Icon
+                  style={{ color: "#29AD85" }}
+                  active
+                  type='FontAwesome5'
+                  name='bread-slice'
+                />
+              </Item>
+
+              <Item style={styles.input} rounded inlineLabel>
+                <Label>Blood Sugar (Optional)</Label>
+                <Input onChangeText={this.updateBloodSugar} />
+                <Icon
+                  style={{ color: "#29AD85" }}
+                  active
+                  type='FontAwesome5'
+                  name='tint'
+                />
+              </Item>
+              <Item style={styles.input} rounded inlineLabel>
+                <Label>Food (Optional)</Label>
+                <Input />
+                <Icon
+                  style={{ color: "#29AD85" }}
+                  active
+                  type='FontAwesome5'
+                  name='utensils'
+                />
+              </Item>
+            </Form>
+          </View>
+          {!isLoading ? (
+            <Button
+              dark
+              rounded
+              iconRight
+              style={styles.button}
+              onPress={this.getBolus}
+            >
+              <Text style={{ textAlign: "center" }}>Calculate Insulin</Text>
+              <Icon name='calculator' type='FontAwesome5' />
+            </Button>
+          ) : (
+            <Spinner />
+          )}
+
+          {noInput || isNaN(insulinTotal) ? (
+            <Text style={styles.totalUnits}>Please enter carbs</Text>
+          ) : (
+            <View>
+              <Text style={styles.resultText}>
+                {Math.round(insulinTotal * 10) / 10}
+              </Text>
+              <Text style={styles.totalUnits}>Total Units</Text>
+            </View>
+          )}
         </View>
-        <Button style={styles.button} onPress={this.getBolus}>
-          <Text>Click Me!</Text>
-        </Button>
-        <Text style={styles.resultText}>
-          {Math.round(insulinTotal * 100) / 100}
-        </Text>
-        <Text style={styles.totalUnits}>total units</Text>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  headerContainer: {
+    position: "absolute"
+  },
+  formContainer: {
     backgroundColor: "#E7E7E7",
-    justifyContent: "center"
+    flex: 6,
+    justifyContent: "center",
+    alignItems: "stretch"
   },
   form: {
     alignItems: "stretch"
   },
-  button: {
-    width: 150,
+  input: {
+    width: 320,
     alignSelf: "center",
-    marginTop: 25,
-    backgroundColor: "gray"
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  button: {
+    alignSelf: "center",
+    backgroundColor: "#29AD85",
+    marginTop: 18,
+    marginBottom: 17
   },
   resultText: {
     textAlign: "center",
@@ -133,7 +214,8 @@ const styles = StyleSheet.create({
   },
   totalUnits: {
     textAlign: "center",
-    fontSize: 25
+    fontSize: 25,
+    marginTop: 20
   }
 });
 
