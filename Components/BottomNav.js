@@ -12,7 +12,7 @@ import Login from "../views/Login";
 const TabNavigator = createBottomTabNavigator(
   {
     Calculate: Calculate,
-    Logs: Logs,
+    // Logs: Logs,
     Settings: Settings
   },
   {
@@ -30,13 +30,13 @@ const TabNavigator = createBottomTabNavigator(
           iconName = "ios-paper";
         }
 
-        // You can return any component that you like here!
         return <IconComponent name={iconName} size={25} color={tintColor} />;
       }
     }),
     tabBarOptions: {
       activeTintColor: "#29AD85",
-      inactiveTintColor: "gray"
+      inactiveTintColor: "gray",
+      keyboardHidesTabBar: false
     }
   }
 );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Form, Item, Label, Input, Button } from "native-base";
+import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { Form, Item, Label, Input } from "native-base";
 import { connect } from "react-redux";
 import {
   changeInsulinSensitivity,
@@ -8,6 +8,7 @@ import {
   changeMinRange,
   changeMaxRange
 } from "../redux/actions/actions";
+import TopNav from "../Components/TopNav";
 // import RangeSlider from "react-native-range-slider";
 
 class Settings extends Component {
@@ -44,38 +45,50 @@ class Settings extends Component {
   render() {
     const { carbRatio, insulinSensitivity, minRange, maxRange } = this.state;
     return (
-      <View style={styles.container}>
-        <Form>
-          <Item inlineLabel>
-            <Label style={styles.label}>Carb Ratio</Label>
-            <Input
-              placeholder={carbRatio.toString()}
-              onChangeText={this.setCarbRatio}
-            />
-          </Item>
-          <Item inlineLabel>
-            <Label style={styles.label}>Insulin Sensitivity</Label>
-            <Input
-              placeholder={insulinSensitivity.toString()}
-              onChangeText={this.setInsulinSensitivity}
-            />
-          </Item>
-          <Item inlineLabel>
-            <Label style={styles.label}>Min Range</Label>
-            <Input
-              placeholder={minRange.toString()}
-              onChangeText={this.setMinRange}
-            />
-          </Item>
-          <Item inlineLabel last>
-            <Label style={styles.label}>Max Range</Label>
-            <Input
-              placeholder={maxRange.toString()}
-              onChangeText={this.setMaxRange}
-            />
-          </Item>
-          <View>
-            {/* <RangeSlider
+      <View style={{ flex: 1 }}>
+        <View>
+          <TopNav />
+        </View>
+        <View style={styles.container}>
+          <Form>
+            <Item inlineLabel>
+              <Label style={styles.label}>Carb Ratio</Label>
+              <Input
+                placeholder={carbRatio.toString()}
+                onChangeText={this.setCarbRatio}
+                keyboardType='number-pad'
+                returnKeyType='done'
+              />
+            </Item>
+            <Item inlineLabel>
+              <Label style={styles.label}>Insulin Sensitivity</Label>
+              <Input
+                placeholder={insulinSensitivity.toString()}
+                onChangeText={this.setInsulinSensitivity}
+                keyboardType='number-pad'
+                returnKeyType='done'
+              />
+            </Item>
+            <Item inlineLabel>
+              <Label style={styles.label}>Min Range</Label>
+              <Input
+                placeholder={minRange.toString()}
+                onChangeText={this.setMinRange}
+                keyboardType='number-pad'
+                returnKeyType='done'
+              />
+            </Item>
+            <Item inlineLabel last>
+              <Label style={styles.label}>Max Range</Label>
+              <Input
+                placeholder={maxRange.toString()}
+                onChangeText={this.setMaxRange}
+                keyboardType='number-pad'
+                returnKeyType='done'
+              />
+            </Item>
+            <View>
+              {/* <RangeSlider
               minValue={0}
               maxValue={100}
               tintColor={"#da0f22"}
@@ -93,8 +106,9 @@ class Settings extends Component {
                 console.log(data);
               }}
             /> */}
-          </View>
-        </Form>
+            </View>
+          </Form>
+        </View>
       </View>
     );
   }

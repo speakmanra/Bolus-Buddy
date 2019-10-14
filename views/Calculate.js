@@ -12,6 +12,7 @@ import {
 } from "native-base";
 
 import { connect } from "react-redux";
+import TopNav from "../Components/TopNav";
 
 class Calculate extends Component {
   static navigationOptions = {
@@ -33,8 +34,10 @@ class Calculate extends Component {
       maxRange: 160,
       bloodSugar: 0,
       insulinTotal: 0,
+      carbs: "",
       noInput: true,
-      isLoading: false
+      isLoading: false,
+      carbsIsEmpty: false
     };
   }
 
@@ -66,8 +69,6 @@ class Calculate extends Component {
     } else {
       correctionBolus = 0;
     }
-    console.log(foodBolus);
-    console.log(correctionBolus);
     let insulinTotal = correctionBolus + foodBolus;
 
     this.setState({
@@ -79,8 +80,7 @@ class Calculate extends Component {
     Keyboard.dismiss();
     this.getSettings();
     this.setState({
-      isLoading: true,
-      noInput: true
+      isLoading: true
     });
     setTimeout(() => {
       this.insulinAlgo();
@@ -90,6 +90,15 @@ class Calculate extends Component {
         isLoading: false,
         noInput: false
       });
+      if (this.state.carbs === "") {
+        this.setState({
+          carbsIsEmpty: true
+        });
+      } else {
+        this.setState({
+          carbsIsEmpty: false
+        });
+      }
     }, 600);
   };
 
@@ -106,50 +115,55 @@ class Calculate extends Component {
   };
 
   render() {
-    const { noInput, insulinTotal, isLoading } = this.state;
+    const { noInput, insulinTotal, isLoading, carbsIsEmpty } = this.state;
     return (
       <View style={{ flex: 1 }}>
+        <View>
+          <TopNav />
+        </View>
         <View style={styles.formContainer}>
-          <View style={styles.form}>
-            <Form>
-              <Item
-                style={styles.input}
-                rounded
-                inlineLabel
-                error={isNaN(insulinTotal)}
-              >
-                <Label>Carbohydrates</Label>
-                <Input onChangeText={this.updateCarbs} />
-                <Icon
-                  style={{ color: "#29AD85" }}
-                  active
-                  type='FontAwesome5'
-                  name='bread-slice'
-                />
-              </Item>
+          <Form>
+            <Item style={styles.input} rounded inlineLabel error={carbsIsEmpty}>
+              <Label>Carbohydrates</Label>
+              <Input
+                keyboardType='number-pad'
+                returnKeyType='done'
+                onChangeText={this.updateCarbs}
+              />
+              <Icon
+                style={{ color: "#29AD85" }}
+                active
+                type='FontAwesome5'
+                name='bread-slice'
+              />
+            </Item>
 
-              <Item style={styles.input} rounded inlineLabel>
-                <Label>Blood Sugar (Optional)</Label>
-                <Input onChangeText={this.updateBloodSugar} />
-                <Icon
-                  style={{ color: "#29AD85" }}
-                  active
-                  type='FontAwesome5'
-                  name='tint'
-                />
-              </Item>
-              <Item style={styles.input} rounded inlineLabel>
-                <Label>Food (Optional)</Label>
-                <Input />
-                <Icon
-                  style={{ color: "#29AD85" }}
-                  active
-                  type='FontAwesome5'
-                  name='utensils'
-                />
-              </Item>
-            </Form>
-          </View>
+            <Item style={styles.input} rounded inlineLabel>
+              <Label>Blood Sugar (Optional)</Label>
+              <Input
+                keyboardType='number-pad'
+                returnKeyType='done'
+                onChangeText={this.updateBloodSugar}
+              />
+              <Icon
+                style={{ color: "#29AD85" }}
+                active
+                type='FontAwesome5'
+                name='tint'
+              />
+            </Item>
+            <Item style={styles.input} rounded inlineLabel>
+              <Label>Food (Optional)</Label>
+              <Input returnKeyType='done' />
+              <Icon
+                style={{ color: "#29AD85" }}
+                active
+                type='FontAwesome5'
+                name='utensils'
+              />
+            </Item>
+          </Form>
+
           {!isLoading ? (
             <Button
               dark
@@ -166,13 +180,12 @@ class Calculate extends Component {
           )}
 
           {noInput || isNaN(insulinTotal) ? (
-            <Text style={styles.totalUnits}>Please enter carbs</Text>
+            <Text style={styles.totalUnits}>0 Totals Units</Text>
           ) : (
             <View>
-              <Text style={styles.resultText}>
-                {Math.round(insulinTotal * 10) / 10}
+              <Text style={styles.totalUnits}>
+                {Math.round(insulinTotal * 10) / 10} Total Units
               </Text>
-              <Text style={styles.totalUnits}>Total Units</Text>
             </View>
           )}
         </View>
@@ -182,18 +195,12 @@ class Calculate extends Component {
 }
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    position: "absolute"
-  },
   formContainer: {
     backgroundColor: "#E7E7E7",
-    flex: 6,
-    justifyContent: "center",
-    alignItems: "stretch"
+    flex: 1,
+    justifyContent: "center"
   },
-  form: {
-    alignItems: "stretch"
-  },
+
   input: {
     width: 320,
     alignSelf: "center",
