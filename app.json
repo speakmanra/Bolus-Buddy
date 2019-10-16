@@ -18,7 +18,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ryanspeakman.carbcount"
+    },
+    "android": {
+      "package": "com.ryanspeakman.carbcount"
     }
   }
 }
