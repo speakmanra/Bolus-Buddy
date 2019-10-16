@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Carb Count",
-    "slug": "expo.io/@speakmanra/CarbCount",
+    "slug": "CarbCount",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android"],
