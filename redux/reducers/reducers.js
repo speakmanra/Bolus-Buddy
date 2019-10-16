@@ -12,8 +12,6 @@ const initialState = {
   maxRange: 160
 };
 
-console.log(initialState);
-
 function rootReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_CARB_RATIO:

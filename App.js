@@ -9,9 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={<LoadingView />} persistor={persistor}>
-        <BottomNav />
-      </PersistGate>
+      <BottomNav />
     </Provider>
   );
 }

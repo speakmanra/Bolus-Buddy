@@ -118,9 +118,9 @@ class Calculate extends Component {
     const { noInput, insulinTotal, isLoading, carbsIsEmpty } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <View>
+        {/* <View>
           <TopNav />
-        </View>
+        </View> */}
         <View style={styles.formContainer}>
           <Form>
             <Item style={styles.input} rounded inlineLabel error={carbsIsEmpty}>

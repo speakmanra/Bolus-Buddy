@@ -46,9 +46,9 @@ class Settings extends Component {
     const { carbRatio, insulinSensitivity, minRange, maxRange } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <View>
+        {/* <View>
           <TopNav />
-        </View>
+        </View> */}
         <View style={styles.container}>
           <Form>
             <Item inlineLabel>
