@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Carb Count",
-    "slug": "CarbCount",
+    "name": "DiaBuddy",
+    "slug": "DiaBuddy",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android"],
@@ -19,10 +19,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.ryanspeakman.carbcount"
+      "bundleIdentifier": "com.ryanspeakman.DiaBuddy"
     },
     "android": {
-      "package": "com.ryanspeakman.carbcount"
+      "package": "com.ryanspeakman.DiaBuddy"
     }
   }
 }

@@ -139,7 +139,7 @@ class Calculate extends Component {
             </Item>
 
             <Item style={styles.input} rounded inlineLabel>
-              <Label>Blood Sugar (Optional)</Label>
+              <Label>Blood Sugar (Opt)</Label>
               <Input
                 keyboardType='number-pad'
                 returnKeyType='done'
@@ -152,7 +152,7 @@ class Calculate extends Component {
                 name='tint'
               />
             </Item>
-            <Item style={styles.input} rounded inlineLabel>
+            {/* <Item style={styles.input} rounded inlineLabel>
               <Label>Food (Optional)</Label>
               <Input returnKeyType='done' />
               <Icon
@@ -161,7 +161,7 @@ class Calculate extends Component {
                 type='FontAwesome5'
                 name='utensils'
               />
-            </Item>
+            </Item> */}
           </Form>
 
           {!isLoading ? (
