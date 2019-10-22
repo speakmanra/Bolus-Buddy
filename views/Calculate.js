@@ -28,10 +28,6 @@ class Calculate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      carbRatio: 15,
-      insulinSensitivity: 50,
-      minRange: 80,
-      maxRange: 160,
       bloodSugar: 0,
       insulinTotal: 0,
       carbs: "",
@@ -126,30 +122,30 @@ class Calculate extends Component {
             <Item style={styles.input} rounded inlineLabel error={isEmpty}>
               <Label>Carbohydrates</Label>
               <Input
-                keyboardType='number-pad'
-                returnKeyType='done'
+                keyboardType="number-pad"
+                returnKeyType="done"
                 onChangeText={this.updateCarbs}
               />
               <Icon
                 style={{ color: "#29AD85" }}
                 active
-                type='FontAwesome5'
-                name='bread-slice'
+                type="FontAwesome5"
+                name="bread-slice"
               />
             </Item>
 
             <Item style={styles.input} rounded inlineLabel error={isEmpty}>
               <Label>Blood Sugar (Opt)</Label>
               <Input
-                keyboardType='number-pad'
-                returnKeyType='done'
+                keyboardType="number-pad"
+                returnKeyType="done"
                 onChangeText={this.updateBloodSugar}
               />
               <Icon
                 style={{ color: "#29AD85" }}
                 active
-                type='FontAwesome5'
-                name='tint'
+                type="FontAwesome5"
+                name="tint"
               />
             </Item>
             {/* <Item style={styles.input} rounded inlineLabel>
@@ -173,7 +169,7 @@ class Calculate extends Component {
               onPress={this.getBolus}
             >
               <Text style={{ textAlign: "center" }}>Calculate Insulin</Text>
-              <Icon name='calculator' type='FontAwesome5' />
+              <Icon name="calculator" type="FontAwesome5" />
             </Button>
           ) : (
             <Spinner />

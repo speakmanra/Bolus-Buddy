@@ -19,25 +19,26 @@ function rootReducer(state = initialState, action) {
       AsyncStorage.setItem("carbRatio", action.carbRatio);
       return {
         ...state,
-        carbRatio: action.carbRatio
+        carbRatio: action.carbRatio || state.carbRatio
       };
     case CHANGE_INSULIN_SENSITIVITY:
       AsyncStorage.setItem("insulinSensitivity", action.insulinSensitivity);
       return {
         ...state,
-        insulinSensitivity: action.insulinSensitivity
+        insulinSensitivity:
+          action.insulinSensitivity || state.insulinSensitivity
       };
     case CHANGE_MIN_RANGE:
       AsyncStorage.setItem("minRange", action.minRange);
       return {
         ...state,
-        minRange: action.minRange
+        minRange: action.minRange || state.minRange
       };
     case CHANGE_MAX_RANGE:
       AsyncStorage.setItem("maxRange", action.maxRange);
       return {
         ...state,
-        maxRange: action.maxRange
+        maxRange: action.maxRange || state.maxRange
       };
     default:
       return state;

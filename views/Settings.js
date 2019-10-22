@@ -25,43 +25,44 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    getSettings = async () => {
-      let carbRatio;
-      let insulinSensitivity;
-      let minRange;
-      let maxRange;
-      try {
-        carbRatio = (await AsyncStorage.getItem("carbRatio")) || "none";
-        insulinSensitivity =
-          (await AsyncStorage.getItem("insulinSensitivity")) || "none";
-        minRange = (await AsyncStorage.getItem("minRange")) || "none";
-        maxRange = (await AsyncStorage.getItem("maxRange")) || "none";
-      } catch (error) {
-        console.log(error);
-      }
-      if (carbRatio != "none") {
-        this.setState({
-          carbRatio: carbRatio
-        });
-      }
-      if (insulinSensitivity != "none") {
-        this.setState({
-          insulinSensitivity: insulinSensitivity
-        });
-      }
-      if (minRange != "none") {
-        this.setState({
-          minRange: minRange
-        });
-      }
-      if (maxRange != "none") {
-        this.setState({
-          maxRange: maxRange
-        });
-        this.setMinRange(maxRange);
-      }
-    };
+    this.getSettings();
   }
+
+  getSettings = async () => {
+    let carbRatio;
+    let insulinSensitivity;
+    let minRange;
+    let maxRange;
+    try {
+      carbRatio = (await AsyncStorage.getItem("carbRatio")) || "none";
+      insulinSensitivity =
+        (await AsyncStorage.getItem("insulinSensitivity")) || "none";
+      minRange = (await AsyncStorage.getItem("minRange")) || "none";
+      maxRange = (await AsyncStorage.getItem("maxRange")) || "none";
+    } catch (error) {
+      console.log(error);
+    }
+    if (carbRatio != "none") {
+      this.setState({
+        carbRatio: carbRatio
+      });
+    }
+    if (insulinSensitivity != "none") {
+      this.setState({
+        insulinSensitivity: insulinSensitivity
+      });
+    }
+    if (minRange != "none") {
+      this.setState({
+        minRange: minRange
+      });
+    }
+    if (maxRange != "none") {
+      this.setState({
+        maxRange: maxRange
+      });
+    }
+  };
 
   setCarbRatio = num => {
     this.props.changeCarbRatio(num);
@@ -97,8 +98,8 @@ class Settings extends Component {
               <Input
                 placeholder={carbRatio.toString()}
                 onChangeText={this.setCarbRatio}
-                keyboardType='number-pad'
-                returnKeyType='done'
+                keyboardType="number-pad"
+                returnKeyType="done"
               />
             </Item>
             <Item inlineLabel>
@@ -106,8 +107,8 @@ class Settings extends Component {
               <Input
                 placeholder={insulinSensitivity.toString()}
                 onChangeText={this.setInsulinSensitivity}
-                keyboardType='number-pad'
-                returnKeyType='done'
+                keyboardType="number-pad"
+                returnKeyType="done"
               />
             </Item>
             <Item inlineLabel>
@@ -115,8 +116,8 @@ class Settings extends Component {
               <Input
                 placeholder={minRange.toString()}
                 onChangeText={this.setMinRange}
-                keyboardType='number-pad'
-                returnKeyType='done'
+                keyboardType="number-pad"
+                returnKeyType="done"
               />
             </Item>
             <Item inlineLabel last>
@@ -124,8 +125,8 @@ class Settings extends Component {
               <Input
                 placeholder={maxRange.toString()}
                 onChangeText={this.setMaxRange}
-                keyboardType='number-pad'
-                returnKeyType='done'
+                keyboardType="number-pad"
+                returnKeyType="done"
               />
             </Item>
             <View>
