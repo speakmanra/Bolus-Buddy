@@ -3,8 +3,7 @@ import BottomNav from "./Components/BottomNav";
 import LoadingView from "./Components/LoadingView";
 import { Provider } from "react-redux";
 
-import { persistor, store } from "./redux/store/store";
-import { PersistGate } from "redux-persist/integration/react";
+import { store } from "./redux/store/store";
 
 function App() {
   return (
