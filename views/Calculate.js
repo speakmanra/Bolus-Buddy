@@ -37,7 +37,7 @@ class Calculate extends Component {
       carbs: "",
       noInput: true,
       isLoading: false,
-      carbsIsEmpty: false
+      isEmpty: false
     };
   }
 
@@ -90,16 +90,16 @@ class Calculate extends Component {
         isLoading: false,
         noInput: false
       });
-      if (this.state.carbs === "") {
+      if (this.state.carbs === "" && this.state.bloodSugar === "") {
         this.setState({
-          carbsIsEmpty: true
+          isEmpty: true
         });
       } else {
         this.setState({
-          carbsIsEmpty: false
+          isEmpty: false
         });
       }
-    }, 600);
+    }, 550);
   };
 
   updateCarbs = num => {
@@ -115,7 +115,7 @@ class Calculate extends Component {
   };
 
   render() {
-    const { noInput, insulinTotal, isLoading, carbsIsEmpty } = this.state;
+    const { noInput, insulinTotal, isLoading, isEmpty } = this.state;
     return (
       <View style={{ flex: 1 }}>
         {/* <View>
@@ -123,7 +123,7 @@ class Calculate extends Component {
         </View> */}
         <View style={styles.formContainer}>
           <Form>
-            <Item style={styles.input} rounded inlineLabel error={carbsIsEmpty}>
+            <Item style={styles.input} rounded inlineLabel error={isEmpty}>
               <Label>Carbohydrates</Label>
               <Input
                 keyboardType='number-pad'
@@ -138,7 +138,7 @@ class Calculate extends Component {
               />
             </Item>
 
-            <Item style={styles.input} rounded inlineLabel>
+            <Item style={styles.input} rounded inlineLabel error={isEmpty}>
               <Label>Blood Sugar (Opt)</Label>
               <Input
                 keyboardType='number-pad'
