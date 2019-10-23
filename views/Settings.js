@@ -98,8 +98,8 @@ class Settings extends Component {
               <Input
                 placeholder={carbRatio.toString()}
                 onChangeText={this.setCarbRatio}
-                keyboardType="number-pad"
-                returnKeyType="done"
+                keyboardType='number-pad'
+                returnKeyType='done'
               />
             </Item>
             <Item inlineLabel>
@@ -107,8 +107,8 @@ class Settings extends Component {
               <Input
                 placeholder={insulinSensitivity.toString()}
                 onChangeText={this.setInsulinSensitivity}
-                keyboardType="number-pad"
-                returnKeyType="done"
+                keyboardType='number-pad'
+                returnKeyType='done'
               />
             </Item>
             <Item inlineLabel>
@@ -116,8 +116,8 @@ class Settings extends Component {
               <Input
                 placeholder={minRange.toString()}
                 onChangeText={this.setMinRange}
-                keyboardType="number-pad"
-                returnKeyType="done"
+                keyboardType='number-pad'
+                returnKeyType='done'
               />
             </Item>
             <Item inlineLabel last>
@@ -125,8 +125,8 @@ class Settings extends Component {
               <Input
                 placeholder={maxRange.toString()}
                 onChangeText={this.setMaxRange}
-                keyboardType="number-pad"
-                returnKeyType="done"
+                keyboardType='number-pad'
+                returnKeyType='done'
               />
             </Item>
             <View>
