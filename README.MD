@@ -1,0 +1,1 @@
+# A React Native mobile app that calulates the amount of insulin you should give yourself depending on the carbohydrates that you eat and your current bloodsugar. Used for people with type one diabetes.
